@@ -1,0 +1,27 @@
+[
+    {
+        "question":"Which one of these is famous Muslim Boxer?",
+        "choices":["Mike Tyson","Muhammad Ali","Floyd Mayweather","Manny Pacquiao"],
+        "correctAnswer":1
+
+    },
+    {
+        "question":"Not the Java Script Framework?",
+        "choices":["Angular","React","Vue","Flutter"],
+        "correctAnswer":3
+    },
+    {
+        "question":"Which one of these is not the Javascript array Method?",
+        "choices":["map","filter","reduce","useEach"],
+        "correctAnswer":3
+    },{
+         "question":"Which one of these is not the Javascript Object Method?",
+        "choices":["values","forEach","keys","entries"],
+        "correctAnswer":1
+    },{
+        "question":"Which one of these is not the Javascript String Method?",
+        "choices":["split","slice","splice","concat"],
+        "correctAnswer":2
+    }
+
+]
