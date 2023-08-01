@@ -1,0 +1,17 @@
+{
+  "name": "project05_word_counter",
+  "version": "1.0.0",
+  "description": "The user will enter a english paragraph and all that is needed is to just to implement counting characters and words without whitespaces.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Noman Abid",
+  "license": "ISC",
+  "dependencies": {
+    "prompt-sync": "^4.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.4.5"
+  }
+}
