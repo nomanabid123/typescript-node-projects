@@ -3,12 +3,15 @@ import chalk from "chalk";
 import chalkAnimation from "chalk-animation";
 import { createSpinner } from "nanospinner";
 import termkit from "terminal-kit";
+import { exit } from "process";
 const term = termkit.terminal;
 const log = console.log;
 const failure = chalk.bold.red;
 const success = chalk.bold.green;
+const warning = chalk.bold.yellow;
 const numOfTurns = 3;
-const highScore = 0;
+let yourScore = 0;
+let chooseddifficultyLevel = "";
 const diffiultyLevels = ["easy", "medium", "hard"];
 const getRandomNumber = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -41,8 +44,8 @@ const launchFirework = () => {
     setTimeout(() => {
         clearInterval(animationInterval);
         term.moveTo(1, 1).eraseLine();
-        term('\nAnimation finished!\n');
     }, 3000);
+    return;
 };
 const playGame = async (randomNumber, numOfTurns) => {
     const { guess } = await inquirer.prompt([
@@ -54,25 +57,31 @@ const playGame = async (randomNumber, numOfTurns) => {
     ]);
     if (guess === randomNumber) {
         log(success("You guessed it right"));
-        log("=====================================");
         launchFirework();
+        yourScore += 10;
+        log(`Your score is ${yourScore}`);
+        let randomNum = getRandomNumber(1, chooseddifficultyLevel === "easy"
+            ? 10
+            : chooseddifficultyLevel === "medium"
+                ? 20
+                : 50);
+        playGame(randomNum, numOfTurns);
+    }
+    else if (guess !== randomNumber && numOfTurns > 1) {
+        log(failure("You guessed it wrong"));
         log("=====================================");
-        chalkAnimation.rainbow("You won");
-        return;
+        log(`You have ${numOfTurns - 1} turns left`);
+        log("=====================================");
+        playGame(randomNumber, numOfTurns - 1);
     }
     if (numOfTurns === 1) {
-        log(failure("You lost"));
+        log("random number was " + randomNumber);
         log("=====================================");
         log("Game Over");
         log("=====================================");
-        chalkAnimation.radar("You lost");
-        return;
+        log(`Your score is ${yourScore}`);
+        exit();
     }
-    log(failure("You guessed it wrong"));
-    log("=====================================");
-    log(`You have ${numOfTurns - 1} turns left`);
-    log("=====================================");
-    playGame(randomNumber, numOfTurns - 1);
 };
 const startGame = async () => {
     const { difficulty } = await inquirer.prompt([
@@ -83,21 +92,29 @@ const startGame = async () => {
             choices: diffiultyLevels,
         },
     ]);
+    chooseddifficultyLevel = difficulty;
     const randomNumber = getRandomNumber(1, difficulty === "easy" ? 10 : difficulty === "medium" ? 20 : 50);
-    ;
     const spinner = createSpinner("Generating random number");
     spinner.start();
     setTimeout(() => {
         spinner.stop();
         log(success("Random number generated"));
-        log("You have 3 turns to guess the number");
-        log("Lets start the game");
-        log("=====================================");
-        playGame(randomNumber, numOfTurns);
+        log(warning("You have 3 turns to guess the number"));
+        log("");
+        const rainbow = chalkAnimation.rainbow("Game starts in 3 seconds");
+        setTimeout(() => {
+            rainbow.stop();
+        }, 3000);
+        log(chalk.bgCyan.bold("Good luck"));
+        // playGame(randomNumber, numOfTurns);
+        playGame(2, numOfTurns);
     }, 2000);
 };
 const main = () => {
-    chalkAnimation.rainbow("Welcome to the number guessing game");
-    startGame();
+    const rainbow = chalkAnimation.rainbow("Welcome to the number guessing game");
+    setTimeout(() => {
+        rainbow.stop();
+        startGame();
+    }, 2000);
 };
 main();
