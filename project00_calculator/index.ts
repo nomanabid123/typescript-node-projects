@@ -6,14 +6,14 @@ const chooseOperation = async () => {
       type: "list",
       name: "operation",
       message: "Choose an operation",
-      choices: ["Addition", "Subtraction", "Multiplication", "Division"],
+      choices: ["*", "\\", "+", "-"],
     },
   ]);
   return operation;
 };
 
 const chooseNumbers = async (operation: string) => {
-  const [number1, number2] = await inquirer.prompt([
+  const number = await inquirer.prompt([
     {
       type: "number",
       name: "number1",
@@ -32,24 +32,25 @@ const chooseNumbers = async (operation: string) => {
     },
   ]);
 
-  return [number1, number2];
+  return number;
 };
 
 const calculate = async () => {
   const operation = await chooseOperation();
-  const [number1, number2] = await chooseNumbers(operation);
+  const number = await chooseNumbers(operation);
+  const { number1, number2 } = number;
   let result = 0;
   switch (operation) {
-    case "Addition":
+    case "+":
       result = number1 + number2;
       break;
-    case "Subtraction":
+    case "-":
       result = number1 - number2;
       break;
-    case "Multiplication":
+    case "*":
       result = number1 * number2;
       break;
-    case "Division":
+    case "\\":
       result = number1 / number2;
       break;
   }
